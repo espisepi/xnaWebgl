@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   createProgram();
 
-  var cubeModel = new GameObject(program, [0, 0, 0], 'data/cube.json', program.textures[0]);
+  var cubeModel = new GameObject(program, [0, 0, -10], 'data/cube.json', program.textures[0]);
 
   function drawScene() {
     var gl = graphicsDevice.gl;

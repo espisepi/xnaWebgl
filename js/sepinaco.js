@@ -144,7 +144,7 @@ GameObject.prototype.draw = function (mvpMatrix) {
     }
 
     var gl = this.basicProgram.graphicsDevice.gl;
-    mat4.translate(mvpMatrix.mvMatrix, [0, 0, 0]);
+    mat4.translate(mvpMatrix.mvMatrix, this.position);
 
     gl.useProgram(this.basicProgram.shaderProgram);
 
