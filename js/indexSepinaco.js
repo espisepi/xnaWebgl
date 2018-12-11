@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var program = null;
 
+  var mvpMatrix = new MVPMatrix();
+
   function initTextures(graphicsDevice) {
     var textures = Array(2);
     var textureCube = new Texture('img/cubeImg.gif', graphicsDevice);
@@ -24,7 +26,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
   createProgram();
 
-  cubeModel = new GameObject(program, [0, 0, 0], 'data/cube.json',program.textures[0]);
+  var cubeModel = new GameObject(program, [0, 0, 0], 'data/cube.json', program.textures[0]);
+
+  function drawScene() {
+    var gl = graphicsDevice.gl;
+    gl.viewport(0, 0, graphicsDevice.viewport.width, graphicsDevice.viewport.height);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    mat4.perspective(45, graphicsDevice.viewport.width / graphicsDevice.viewport.height, 0.1, 100.0,
+      mvpMatrix.pMatrix);
+
+    //Configurar la camara
+    //WEBGL Tomara la siguiente posicion como si fuese (0,0,0)
+    mat4.identity(mvpMatrix.mvMatrix);
+    mat4.translate(mvpMatrix.mvMatrix, [0, 0, 0]);
+
+    cubeModel.draw(mvpMatrix);
+  }
+
+  function tick() {
+    requestAnimFrame(tick);
+    //handleKeys();
+    drawScene();
+    //animate();
+
+    var gl = graphicsDevice.gl;
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.enable(gl.DEPTH_TEST);
+  }
+
+  tick();
 
 
   //   var program = new Zia.BasicProgram(graphicsDevice, {
