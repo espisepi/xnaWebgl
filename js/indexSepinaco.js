@@ -1,13 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var canvas = document.getElementById('mainCanvas');
+  function webGLStart() {
+    canvas = document.getElementById('mainCanvas');
+    graphicsDevice = new GraphicsDevice(canvas);
+    program = null;
+    mvpMatrix = new MVPMatrix();
+    camera = new Camera();
+    program = createProgram();
+    cubeModel = new GameObject(program, [0, 0, -10], 'data/cube.json', program.textures[0]);
 
-  var graphicsDevice = new GraphicsDevice(canvas);
+    var gl = graphicsDevice.gl;
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.enable(gl.DEPTH_TEST);
 
-  var program = null;
+    tick();
+  }
 
-  var mvpMatrix = new MVPMatrix();
+  webGLStart();
 
-  function initTextures(graphicsDevice) {
+
+  function initTextures() {
     var textures = Array(2);
     var textureCube = new Texture('img/cubeImg.gif', graphicsDevice);
     var textureTeapot = new Texture('img/arroway.de_metal+structure+06_d100_flat.jpg', graphicsDevice);
@@ -18,17 +29,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function createProgram() {
-    program = new BasicProgram(graphicsDevice, "shader-fs", "shader-vs");
+    var program = new BasicProgram(graphicsDevice, "shader-fs", "shader-vs");
 
     program.textures = initTextures(graphicsDevice);
 
+    return program;
   }
 
-  createProgram();
-
-  var cubeModel = new GameObject(program, [0, 0, -10], 'data/cube.json', program.textures[0]);
-
-  function drawScene() {
+  function drawScene(graphicsDevice) {
     var gl = graphicsDevice.gl;
     gl.viewport(0, 0, graphicsDevice.viewport.width, graphicsDevice.viewport.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -39,15 +47,19 @@ document.addEventListener('DOMContentLoaded', function () {
     //Configurar la camara
     //WEBGL Tomara la siguiente posicion como si fuese (0,0,0)
     mat4.identity(mvpMatrix.mvMatrix);
-    mat4.translate(mvpMatrix.mvMatrix, [0, 0, 0]);
+    mat4.rotate(mvpMatrix.mvMatrix, MathUtils.degToRad(-camera.pitch), [1, 0, 0]);
+    mat4.rotate(mvpMatrix.mvMatrix, MathUtils.degToRad(-camera.yaw), [0, 1, 0]);
+    mat4.translate(mvpMatrix.mvMatrix, [-camera.position[0], -camera.position[1], -camera.position[2]]);
 
+    mvpMatrix.mvPushMatrix();
     cubeModel.draw(mvpMatrix);
+    mvpMatrix.mvPopMatrix();
   }
 
   function tick() {
     requestAnimFrame(tick);
     //handleKeys();
-    drawScene();
+    drawScene(graphicsDevice);
     //animate();
 
     var gl = graphicsDevice.gl;
@@ -55,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
     gl.enable(gl.DEPTH_TEST);
   }
 
-  tick();
+
 
 
   //   var program = new Zia.BasicProgram(graphicsDevice, {

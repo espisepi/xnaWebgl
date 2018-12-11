@@ -267,3 +267,11 @@ MVPMatrix.prototype.setMatrixUniforms = function (basicProgram) {
     mat3.transpose(normalMatrix);
     gl.uniformMatrix3fv(basicProgram.nMatrixUniform, false, normalMatrix);
 }
+
+
+//Camera
+function Camera() {
+    this.position = [0, 0, 0];
+    this.yaw = 0;
+    this.pitch = 0;
+}
