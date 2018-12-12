@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function createProgram() {
-    var program = new BasicProgram(graphicsDevice, "shader-fs", "shader-vs");
+    var program = new Program(graphicsDevice, "shader-fs", "shader-vs");
 
     program.textures = initTextures(graphicsDevice);
 

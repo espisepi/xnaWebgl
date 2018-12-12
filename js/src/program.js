@@ -3,7 +3,7 @@
  * @param {String} shaderfsId Id of the fragment shader in our html
  * @param {String} shadervsId Id of the vertex shader in our html
 */
-function BasicProgram(graphicsDevice, shaderfsId, shadervsId) {
+function Program(graphicsDevice, shaderfsId, shadervsId) {
     var gl = graphicsDevice.gl;
     this.graphicsDevice = graphicsDevice;
     this.shaderProgram = gl.createProgram();
@@ -40,7 +40,7 @@ function BasicProgram(graphicsDevice, shaderfsId, shadervsId) {
 
 }
 
-BasicProgram.prototype.getShader = function (gl, id) {
+Program.prototype.getShader = function (gl, id) {
     var shaderScript = document.getElementById(id);
     if (!shaderScript) {
         return null;

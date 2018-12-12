@@ -1,7 +1,7 @@
 let GameObjectUtils = (() => {
     var publicFunction = {};
     publicFunction.loadBufferJson = function (gameObject) {
-        var gl = gameObject.basicProgram.graphicsDevice.gl;
+        var gl = gameObject.program.graphicsDevice.gl;
         var nameFile = gameObject.srcJson;
         var request = new XMLHttpRequest();
         request.open("GET", nameFile);
