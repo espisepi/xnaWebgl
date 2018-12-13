@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function webGLStart() {
     canvas = document.getElementById('mainCanvas');
     graphicsDevice = new GraphicsDevice(canvas);
+    gl = graphicsDevice.gl;
     program = null;
     mvpMatrix = new MVPMatrix();
     camera = new Camera();
@@ -19,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.onkeyup = handleKeyUp;
     //Fin de codigo temporal
 
-    var gl = graphicsDevice.gl;
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 
